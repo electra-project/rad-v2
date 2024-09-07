@@ -56,41 +56,71 @@ export const createCategoryController = (req, res) => {
 };
 
 // Update a category
-export const updateCategoryController = async (req, res) => {
-  try {
-    const { name } = req.fields;
-    const { id } = req.params;
-    const { photo } = req.files;
+export const updateCategoryController = (req, res) => {
+  const form = formidable({ multiples: true });
 
-    if (!name) {
-      return res.status(400).send({ error: "Name is required" });
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error("Form parsing error:", err);
+      return res.status(400).send({ message: "Error in form data" });
     }
 
-    const category = await categoryModel.findByIdAndUpdate(
-      id,
-      { name, slug: slugify(name) },
-      { new: true }
-    );
+    try {
+      let { name } = fields; // Destructure name from fields
+      const { id } = req.params;
+      const { photo } = files;
 
-    if (photo) {
-      category.photo.data = fs.readFileSync(photo.path);
-      category.photo.contentType = photo.type;
+      console.log("Fields received:", fields);
+
+      // Check if name is an array and extract the first element
+      if (Array.isArray(name)) {
+        name = name[0]; // Extract the first element if it's an array
+      }
+
+      console.log("Category name before slugify:", name);
+
+      if (!name) {
+        return res.status(400).send({ error: "Name is required" });
+      }
+
+      // Ensure name is a string
+      if (typeof name !== "string") {
+        return res.status(400).send({ error: "Name must be a string" });
+      }
+
+      // Find the category by ID
+      const category = await categoryModel.findById(id);
+      if (!category) {
+        return res.status(404).send({ error: "Category not found" });
+      }
+
+      // Update the category name and slug
+      category.name = name;
+      category.slug = slugify(name);
+
+      // Update the photo if provided
+      if (photo && photo[0]) {
+        category.photo.data = fs.readFileSync(photo[0].filepath);
+        category.photo.contentType = photo[0].mimetype;
+      }
+
+      // Save the updated category
+      await category.save();
+
+      res.status(200).send({
+        success: true,
+        message: "Category updated successfully",
+        category,
+      });
+    } catch (error) {
+      console.error("Error while updating category:", error);
+      res.status(500).send({
+        success: false,
+        message: "Error while updating category",
+        error,
+      });
     }
-
-    await category.save();
-    res.status(200).send({
-      success: true,
-      message: "Category updated successfully",
-      category,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      success: false,
-      message: "Error while updating category",
-      error,
-    });
-  }
+  });
 };
 
 // Get all categories

@@ -71,6 +71,7 @@ const CreateCategory = () => {
       formData.append("photo", updatedPhoto);
     }
     try {
+      console.log(formData);
       const { data } = await axios.put(
         `http://localhost:8080/api/v1/category/update-category/${selected._id}`,
         formData,

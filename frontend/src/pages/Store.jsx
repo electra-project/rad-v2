@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useCategory from "../hooks/useCategory";
 import Layout from "../components/Layout/Layout";
 
-const Categories = () => {
+const Store = () => {
   const categories = useCategory();
 
   // Helper function to get the category image URL
@@ -47,4 +47,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Store;
