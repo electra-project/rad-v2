@@ -118,7 +118,7 @@ const HomePage = () => {
         {/* Header and Banner Section */}
         <div className="relative" style={{ height: "calc(100vh - 88px)" }}>
           <img
-            src="/images/banner/banner1.jpg"
+            src="/images/banner/banner6.jpg"
             alt="AORUS AI Gaming Laptop"
             className="w-full h-full object-contain"
           />

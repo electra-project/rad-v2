@@ -10,7 +10,6 @@ import Dashboard from "./pages/user/Dashboard";
 import PrivateRoute from "./components/Routes/Private";
 import ForgotPasssword from "./pages/Auth/ForgotPasssword";
 import AdminRoute from "./components/Routes/AdminRoute";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
 import CreateCategory from "./pages/Admin/CreateCategory";
 import CreateProduct from "./pages/Admin/CreateProduct";
 import Users from "./pages/Admin/Users";
@@ -24,6 +23,7 @@ import Store from "./pages/Store";
 import CategoryProduct from "./pages/CategoryProduct";
 import CartPage from "./pages/CartPage";
 import AdminOrders from "./pages/Admin/AdminOrders";
+
 function App() {
   return (
     <>
@@ -40,7 +40,7 @@ function App() {
           <Route path="user/profile" element={<Profile />} />
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
-          <Route path="admin" element={<AdminDashboard />} />
+          {/* Removed the AdminDashboard route */}
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
           <Route path="admin/product/:slug" element={<UpdateProduct />} />

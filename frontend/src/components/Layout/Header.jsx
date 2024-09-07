@@ -27,7 +27,11 @@ const Header = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="dashboard">
-        <Link to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}>
+        <Link
+          to={`/dashboard/${
+            auth?.user?.role === 1 ? "admin/create-category" : "user"
+          }`}
+        >
           Dashboard
         </Link>
       </Menu.Item>
@@ -39,9 +43,6 @@ const Header = () => {
 
   const categoryMenu = (
     <Menu>
-      <Menu.Item key="all">
-        <Link to="/categories">All Categories</Link>
-      </Menu.Item>
       {categories?.map((c) => (
         <Menu.Item key={c._id}>
           <Link to={`/category/${c.slug}`}>{c.name}</Link>
@@ -162,7 +163,7 @@ const Header = () => {
               showZero
               offset={[0, -10]}
               style={{
-                backgroundColor: "red",
+                backgroundColor: "electra-red",
                 color: "white",
                 fontSize: "0.6rem",
               }}
