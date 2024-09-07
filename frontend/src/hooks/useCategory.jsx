@@ -8,11 +8,18 @@ export default function useCategory() {
   const getCategories = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/category/get-category" // band aid fix here, it would be a paint to change all if this!!
+        "http://localhost:8080/api/v1/category/get-category"
       );
-      setCategories(data?.category);
+      console.log("API response:", data);
+
+      if (data?.success && Array.isArray(data?.categories)) {
+        setCategories(data.categories);
+        console.log("Categories set:", data.categories);
+      } else {
+        console.error("Unexpected data structure:", data);
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching categories:", error);
     }
   };
 

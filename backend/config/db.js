@@ -6,7 +6,7 @@ const connectDB = async () => {
       "Conneted To Mongodb Dataabse"
     );
   } catch (error) {
-    console.log($error);
+    console.log(`$error`);
   }
 };
 

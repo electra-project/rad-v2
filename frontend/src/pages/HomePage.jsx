@@ -7,45 +7,25 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Layout from "./../components/Layout/Layout";
 import { AiOutlineReload } from "react-icons/ai";
+import useCategory from "../hooks/useCategory";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const categories = useCategory();
 
-  //get all cat
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/category/get-category"
-      );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // SOMEONE IMPLEMENT THIS PLSSSS!!!!!
-  const getCategoryImage = (categoryName) => {
-    const imagePath = `/images/category/${categoryName
-      .toLowerCase()
-      .replace(/\s+/g, "-")}.png`;
-    console.log(imagePath); // Log the generated path
-    return imagePath;
-  };
-
+  // Console log to check categories
   useEffect(() => {
-    getAllCategory();
-    getTotal();
-  }, []);
+    console.log("Categories in HomePage:", categories);
+  }, [categories]);
+
   //get products
   const getAllProducts = async () => {
     try {
@@ -146,28 +126,40 @@ const HomePage = () => {
         {/* Categories Grid Section */}
         <div className="bg-gray-100 py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">
+            <h2 className="text-4xl font-bold text-center mb-8">
               Product Categories
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {categories.map((category) => (
-                <Link
-                  to={`/category/${category.slug}`}
-                  key={category._id}
-                  className="group relative overflow-hidden rounded-lg "
-                >
-                  <img
-                    src={getCategoryImage(category.name)}
-                    alt={category.name}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center transition duration-300">
-                    <h3 className="text-white text-xl font-bold text-center">
-                      {category.name}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
+              {categories && categories.length > 0 ? (
+                categories.map((category) => (
+                  <Link
+                    to={`/category/${category.slug}`}
+                    key={category._id}
+                    className="group relative overflow-hidden rounded-lg"
+                  >
+                    {category.image ? (
+                      <img
+                        src={category.image}
+                        // alt={category.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition duration-300 z-10"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <span className="text-gray-500">{category.name}</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center transition duration-300">
+                      <h3 className="text-white text-xl font-bold text-center">
+                        {category.name}
+                      </h3>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-500">
+                  No categories available
+                </p>
+              )}
             </div>
           </div>
         </div>

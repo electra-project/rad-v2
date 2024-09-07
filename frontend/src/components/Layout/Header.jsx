@@ -12,6 +12,8 @@ const Header = () => {
   const [cart] = useCart();
   const categories = useCategory();
 
+  console.log(categories);
+
   const handleLogout = () => {
     setAuth({
       ...auth,
