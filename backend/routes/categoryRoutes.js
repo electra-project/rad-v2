@@ -6,6 +6,7 @@ import {
   deleteCategoryController, // Fixed the typo
   getSingleCategoryController, // Updated for consistency
   updateCategoryController,
+  categoryPhotoController,
 } from "./../controllers/categoryController.js";
 
 const router = express.Router();
@@ -40,5 +41,8 @@ router.delete(
   isAdmin,
   deleteCategoryController // Fixed typo
 );
+
+// category photo
+router.get("/category-photo/:cid", categoryPhotoController);
 
 export default router;

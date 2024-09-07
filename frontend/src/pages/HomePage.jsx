@@ -13,7 +13,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
   const [products, setProducts] = useState([]);
-  // const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
@@ -26,7 +25,7 @@ const HomePage = () => {
     console.log("Categories in HomePage:", categories);
   }, [categories]);
 
-  //get products
+  // Get products
   const getAllProducts = async () => {
     try {
       setLoading(true);
@@ -41,7 +40,7 @@ const HomePage = () => {
     }
   };
 
-  //getTOtal COunt
+  // Get total count
   const getTotal = async () => {
     try {
       const { data } = await axios.get(
@@ -57,7 +56,8 @@ const HomePage = () => {
     if (page === 1) return;
     loadMore();
   }, [page]);
-  //load more
+
+  // Load more products
   const loadMore = async () => {
     try {
       setLoading(true);
@@ -72,7 +72,7 @@ const HomePage = () => {
     }
   };
 
-  // filter by cat
+  // Filter by category
   const handleFilter = (value, id) => {
     let all = [...checked];
     if (value) {
@@ -82,6 +82,7 @@ const HomePage = () => {
     }
     setChecked(all);
   };
+
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
   }, [checked.length, radio.length]);
@@ -90,7 +91,7 @@ const HomePage = () => {
     if (checked.length || radio.length) filterProduct();
   }, [checked, radio]);
 
-  //get filterd product
+  // Get filtered products
   const filterProduct = async () => {
     try {
       const { data } = await axios.post(
@@ -106,6 +107,11 @@ const HomePage = () => {
     }
   };
 
+  // Helper function to get the category image URL
+  const getCategoryImageUrl = (categoryId) => {
+    return `http://localhost:8080/api/v1/category/category-photo/${categoryId}`;
+  };
+
   return (
     <Layout title={"ELECTRA - Best offers "}>
       <div className="flex flex-col min-h-screen bg-black">
@@ -116,44 +122,39 @@ const HomePage = () => {
             alt="AORUS AI Gaming Laptop"
             className="w-full h-full object-contain"
           />
-          {/* <div className="absolute bottom-8 left-8 text-white text-shadow">
-            <h1 className="text-4xl font-bold mb-2">Re: Defyne</h1>
-            <h2 className="text-3xl mb-2">AORUS 16X (2024)</h2>
-            <p className="text-xl">AORUS AI Gaming Laptop</p>
-          </div> */}
         </div>
 
         {/* Categories Grid Section */}
-        <div className="bg-gray-100 py-12">
+        <div className="bg-black py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-8">
+            <h2 className="text-4xl font-bold text-center mb-8 text-white">
               Product Categories
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {categories && categories.length > 0 ? (
                 categories.map((category) => (
-                  <Link
-                    to={`/category/${category.slug}`}
-                    key={category._id}
+                  <div
                     className="group relative overflow-hidden rounded-lg"
+                    key={category._id}
                   >
-                    {category.image ? (
-                      <img
-                        src={category.image}
-                        // alt={category.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition duration-300 z-10"
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-500">{category.name}</span>
+                    <Link to={`/category/${category.slug}`}>
+                      <div
+                        className="h-48 bg-gray-200 flex items-center justify-center"
+                        style={{
+                          backgroundImage: `url(${getCategoryImageUrl(
+                            category._id
+                          )})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          minHeight: "250px",
+                        }}
+                      >
+                        <h3 className="text-white text-xl font-bold text-center bg-black bg-opacity-50 p-2 rounded">
+                          {category.name}
+                        </h3>
                       </div>
-                    )}
-                    <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-50 flex items-center justify-center transition duration-300">
-                      <h3 className="text-white text-xl font-bold text-center">
-                        {category.name}
-                      </h3>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <p className="col-span-full text-center text-gray-500">
@@ -162,6 +163,11 @@ const HomePage = () => {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Products Section */}
+        <div className="bg-black py-12">
+          {/* Add your products display logic here */}
         </div>
       </div>
     </Layout>

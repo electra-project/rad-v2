@@ -149,15 +149,22 @@ export const deleteCategoryController = async (req, res) => {
   }
 };
 
-// Get category photo
-export const getCategoryPhotoController = async (req, res) => {
+// CAT PHOTO
+
+// CAT PHOTO
+export const categoryPhotoController = async (req, res) => {
   try {
     const category = await categoryModel
-      .findById(req.params.id)
-      .select("photo");
-    if (category.photo.data) {
-      res.set("Content-Type", category.photo.contentType);
+      .findById(req.params.cid)
+      .select("photo"); // Use categoryModel instead of Category
+    if (category && category.photo && category.photo.data) {
+      res.set("Content-type", category.photo.contentType);
       return res.status(200).send(category.photo.data);
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: "Photo not found",
+      });
     }
   } catch (error) {
     console.log(error);
