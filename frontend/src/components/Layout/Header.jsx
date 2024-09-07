@@ -45,14 +45,14 @@ const Header = () => {
     <Menu>
       {categories?.map((c) => (
         <Menu.Item key={c._id}>
-          <Link to={`/category/${c.slug}`}>{c.name}</Link>
+          <Link to={`/store/category/${c.slug}`}>{c.name}</Link>
         </Menu.Item>
       ))}
     </Menu>
   );
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-[#161616] text-white">
       <header className="flex items-center justify-between p-4">
         {/* Left Side (Logo and Navigation) */}
         <div className="flex items-center space-x-6">
@@ -73,7 +73,10 @@ const Header = () => {
             <NavLink to="/" className="text-xs hover:text-gray-400">
               HOME
             </NavLink>
-            <NavLink to="/store" className="text-xs hover:text-gray-400">
+            <NavLink
+              to="/store/category"
+              className="text-xs hover:text-gray-400"
+            >
               STORE
             </NavLink>
             <NavLink to="/contact" className="text-xs hover:text-gray-400">

@@ -30,9 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
-        <Route path="/store" element={<Store />} />
+        <Route path="/store/category" element={<Store />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/category/:slug" element={<CategoryProduct />} />
+        <Route path="store/category/:slug" element={<CategoryProduct />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />

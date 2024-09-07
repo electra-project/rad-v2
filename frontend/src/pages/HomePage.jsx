@@ -137,7 +137,7 @@ const HomePage = () => {
                     className="group relative overflow-hidden rounded-lg"
                     key={category._id}
                   >
-                    <Link to={`/category/${category.slug}`}>
+                    <Link to={`store/category/${category.slug}`}>
                       <div
                         className="h-48 bg-gray-200 flex items-center justify-center"
                         style={{
