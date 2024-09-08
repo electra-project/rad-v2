@@ -26,70 +26,73 @@ const Orders = () => {
 
   return (
     <Layout title="Your Orders">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/4 p-4 bg-[#1A1A1A] text-white">
-          <UserMenu />
-        </div>
-        <div className="md:w-3/4 p-4">
-          {orders?.map((o, i) => {
-            // Ensure createAt is a valid date
-            const createdAt = moment(o.createAt).isValid()
-              ? moment(o.createAt).fromNow()
-              : "Date unavailable";
+      <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
+        <div className="flex gap-4 p-4">
+          <div className="w-1/4">
+            <UserMenu />
+          </div>
+          <div className="w-3/4">
+            {orders?.map((o, i) => {
+              // Log the raw date
+              console.log("Raw createdAt:", o.createAt);
 
-            return (
-              <div
-                className="bg-[#222222] p-4 mb-4 rounded-lg shadow-lg"
-                key={o._id}
-              >
-                <table className="w-full table-auto mb-4 text-left">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      <th className="px-2 py-2">#</th>
-                      <th className="px-2 py-2">Status</th>
-                      <th className="px-2 py-2">Buyer</th>
-                      <th className="px-2 py-2">Date</th>
-                      <th className="px-2 py-2">Payment</th>
-                      <th className="px-2 py-2">Quantity</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="px-2 py-2">{i + 1}</td>
-                      <td className="px-2 py-2">{o?.status}</td>
-                      <td className="px-2 py-2">{o?.buyer?.name}</td>
-                      <td className="px-2 py-2">{createdAt}</td>
-                      <td className="px-2 py-2">
-                        {o?.payment.success ? "Success" : "Failed"}
-                      </td>
-                      <td className="px-2 py-2">{o?.products?.length}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="space-y-4">
-                  {o?.products?.map((p) => (
-                    <div
-                      className="flex flex-col sm:flex-row mb-4 p-3 bg-[#333333] rounded-lg shadow-md"
-                      key={p._id}
-                    >
-                      <div className="sm:w-1/3 mb-2 sm:mb-0">
+              // Ensure createAt is a valid date
+              const createdAt = moment(o.createAt).isValid()
+                ? moment(o.createAt).format("MMMM D, YYYY, h:mm:ss A")
+                : "Date unavailable";
+
+              return (
+                <div
+                  className="bg-[#222222] p-4 mb-4 rounded-lg shadow-lg"
+                  key={o._id}
+                >
+                  <table className="w-full mb-4 text-left">
+                    <thead>
+                      <tr>
+                        <th className="p-2">#</th>
+                        <th className="p-2">Status</th>
+                        <th className="p-2">Buyer</th>
+                        <th className="p-2">Date</th>
+                        <th className="p-2">Payment</th>
+                        <th className="p-2">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="p-2">{i + 1}</td>
+                        <td className="p-2">{o?.status}</td>
+                        <td className="p-2">{o?.buyer?.name}</td>
+                        <td className="p-2">{createdAt}</td>
+                        <td className="p-2">
+                          {o?.payment.success ? "Success" : "Failed"}
+                        </td>
+                        <td className="p-2">{o?.products?.length}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="flex flex-col">
+                    {o?.products?.map((p) => (
+                      <div
+                        className="flex items-center mb-4 p-3 bg-[#333333] rounded-lg"
+                        key={p._id}
+                      >
                         <img
                           src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                          className="w-full h-auto object-cover rounded-lg"
+                          className="w-24 h-24 object-cover rounded-lg mr-4"
                           alt={p.name}
                         />
+                        <div>
+                          <p className="font-semibold">{p.name}</p>
+                          <p>{p.description.substring(0, 30)}...</p>
+                          <p className="text-red-500">Price: {p.price}</p>
+                        </div>
                       </div>
-                      <div className="sm:w-2/3 pl-0 sm:pl-4">
-                        <p className="font-semibold">{p.name}</p>
-                        <p className="text-sm text-gray-600">{p.description.substring(0, 30)}...</p>
-                        <p className="font-medium text-red-500">Price: {p.price}</p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </Layout>

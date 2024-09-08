@@ -1,43 +1,134 @@
 import React from "react";
 import Layout from "./../components/Layout/Layout";
-import { BiMailSend, BiPhoneCall, BiSupport } from "react-icons/bi";
+import { BiMailSend, BiPhoneCall, BiSupport, BiMap } from "react-icons/bi";
 
 const Contact = () => {
   return (
-    <Layout title={"Contact us"}>
-      <div className="bg-black text-white min-h-screen py-12">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row items-center">
-            {/* Left Column for Image */}
-            <div className="w-full md:w-1/2 mb-6 md:mb-0">
-              <img
-                src="https://media.istockphoto.com/id/1397549690/photo/reading-the-contracts-terms-and-conditions-and-privacy-policy-businessman-making-a-deal-the.jpg?s=612x612&w=0&k=20&c=s2YwLrxYVeaaqaABI54NFI0PZv0s8TTTm-63VOdhFrY="
-                alt="Contact Us"
-                className="w-full h-auto rounded-lg"
-              />
-            </div>
-            {/* Right Column for Contact Information */}
-            <div className="w-full md:w-1/2 px-4">
-              <h1 className="text-3xl md:text-4xl font-bold bg-gray-800 p-4 rounded-lg text-center mb-6">
-                CONTACT US
-              </h1>
-              <p className="text-gray-400 mb-6">
-                If you have any queries or need information about our products, feel free to call us anytime. We are available 24/7.
-              </p>
-              <div className="space-y-4">
-                <p className="flex items-center text-gray-400">
-                  <BiMailSend className="mr-3 text-xl" />
-                  <span>Email: <a href="mailto:www.help@ecommerceapp.com" className="text-blue-400">www.help@electra.com</a></span>
-                </p>
-                <p className="flex items-center text-gray-400">
-                  <BiPhoneCall className="mr-3 text-xl" />
-                  <span>Phone: <a href="tel:012-3456789" className="text-blue-400">011-2714031</a></span>
-                </p>
-                <p className="flex items-center text-gray-400">
-                  <BiSupport className="mr-3 text-xl" />
-                  <span>Toll Free: <a href="tel:1800-0000-0000" className="text-blue-400">+94-778070245</a></span>
-                </p>
+    <Layout title="Contact Us">
+      <div className="bg-[#1A1A1A] text-white min-h-screen py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
+            Contact Us
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left Column: Contact Information */}
+            <div className="space-y-8">
+              <div className="bg-[#161616] rounded-lg p-6 shadow-lg hover:shadow-xl transition duration-300">
+                <h2 className="text-2xl font-semibold mb-4">
+                  Contact Information
+                </h2>
+                <div className="space-y-4">
+                  <p className="flex items-center text-gray-300">
+                    <BiMailSend className="mr-3 text-xl text-blue-400" />
+                    <span>
+                      Email:{" "}
+                      <a
+                        href="mailto:help@electra.com"
+                        className="text-blue-400 hover:underline"
+                      >
+                        help@electra.com
+                      </a>
+                    </span>
+                  </p>
+                  <p className="flex items-center text-gray-300">
+                    <BiPhoneCall className="mr-3 text-xl text-green-400" />
+                    <span>
+                      Phone:{" "}
+                      <a
+                        href="tel:011-2714031"
+                        className="text-green-400 hover:underline"
+                      >
+                        011-2714031
+                      </a>
+                    </span>
+                  </p>
+                  <p className="flex items-center text-gray-300">
+                    <BiSupport className="mr-3 text-xl text-yellow-400" />
+                    <span>
+                      Toll Free:{" "}
+                      <a
+                        href="tel:+94-778070245"
+                        className="text-yellow-400 hover:underline"
+                      >
+                        +94-778070245
+                      </a>
+                    </span>
+                  </p>
+                  <p className="flex items-center text-gray-300">
+                    <BiMap className="mr-3 text-xl text-red-400" />
+                    <span>Address: 123 Electra Street, Tech City, 10001</span>
+                  </p>
+                </div>
               </div>
+              <div className="bg-[#161616] rounded-lg p-6 shadow-lg hover:shadow-xl transition duration-300">
+                <h2 className="text-2xl font-semibold mb-4">Business Hours</h2>
+                <ul className="space-y-2 text-gray-300">
+                  <li>Monday - Friday: 9:00 AM - 6:00 PM</li>
+                  <li>Saturday: 10:00 AM - 4:00 PM</li>
+                  <li>Sunday: Closed</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Right Column: Contact Form */}
+            <div className="bg-[#161616] rounded-lg p-6 shadow-lg hover:shadow-xl transition duration-300">
+              <h2 className="text-2xl font-semibold mb-6">Send Us a Message</h2>
+              <form className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="w-full px-3 py-2 bg-[#222222] border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Your Name"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="w-full px-3 py-2 bg-[#222222] border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-300 mb-1"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="4"
+                    className="w-full px-3 py-2 bg-[#222222] border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Your message here..."
+                    required
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-electra-red text-white font-bold py-2 px-4 rounded-md transition duration-300"
+                >
+                  Send Message
+                </button>
+              </form>
             </div>
           </div>
         </div>

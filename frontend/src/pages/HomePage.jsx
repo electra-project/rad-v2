@@ -17,11 +17,14 @@ const HomePage = () => {
   const [radio, setRadio] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Track loading state
+  const [categoriesLoading, setCategoriesLoading] = useState(true); // Track categories loading state
   const categories = useCategory();
 
   useEffect(() => {
-    console.log("Categories in HomePage:", categories);
+    if (categories && categories.length > 0) {
+      setCategoriesLoading(false); // Set categories loading to false once categories are available
+    }
   }, [categories]);
 
   const getAllProducts = async () => {
@@ -105,63 +108,81 @@ const HomePage = () => {
     return `http://localhost:8080/api/v1/category/category-photo/${categoryId}`;
   };
 
+  const LoadingScreen = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="text-center">
+        <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"></div>
+        <p className="mt-4 text-white text-xl font-semibold">
+          Loading, please wait...
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <Layout title={"ELECTRA - Best offers"}>
-      <div className="flex flex-col min-h-screen bg-black">
-        {/* Header and Banner Section */}
-        <div className="relative w-full" style={{ height: "40vh" }}>
-          <img
-            src="/images/banner/banner6.jpg"
-            alt="AORUS AI Gaming Laptop"
-            className="w-full h-full object-cover"
-          />
-        </div>
+      {loading || categoriesLoading ? (
+        <LoadingScreen />
+      ) : (
+        <div className="flex flex-col min-h-screen bg-black">
+          {/* Header and Banner Section */}
+          <div
+            className="relative md:block hidden"
+            style={{ height: "calc(100vh - 88px)" }}
+          >
+            <img
+              src="/images/banner/banner6.jpg"
+              alt="AORUS AI Gaming Laptop"
+              className="w-full h-full object-contain"
+            />
+          </div>
 
-        {/* Categories Grid Section */}
-        <div className="bg-black py-6 md:py-12">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-white">
-              Product Categories
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {categories && categories.length > 0 ? (
-                categories.map((category) => (
-                  <div
-                    className="group relative overflow-hidden rounded-lg"
-                    key={category._id}
-                  >
-                    <Link to={`/category/${category.slug}`}>
-                      <div
-                        className="h-32 md:h-48 bg-gray-200 flex items-center justify-center"
-                        style={{
-                          backgroundImage: `url(${getCategoryImageUrl(
-                            category._id
-                          )})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
-                      >
-                        <h3 className="text-white text-lg md:text-xl font-bold text-center bg-black bg-opacity-50 p-2 rounded">
-                          {category.name}
-                        </h3>
-                      </div>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p className="col-span-full text-center text-gray-500">
-                  No categories available
-                </p>
-              )}
+          {/* Categories Grid Section */}
+          <div className="bg-black py-6 md:py-12">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8 text-white">
+                Product Categories
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {categories && categories.length > 0 ? (
+                  categories.map((category) => (
+                    <div
+                      className="group relative overflow-hidden rounded-lg"
+                      key={category._id}
+                    >
+                      <Link to={`/category/${category.slug}`}>
+                        <div
+                          className="h-32 md:h-48 bg-gray-200 flex items-center justify-center"
+                          style={{
+                            backgroundImage: `url(${getCategoryImageUrl(
+                              category._id
+                            )})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                          }}
+                        >
+                          <h3 className="text-white text-lg md:text-xl font-bold text-center bg-black bg-opacity-50 p-2 rounded">
+                            {category.name}
+                          </h3>
+                        </div>
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                  <p className="col-span-full text-center text-gray-500">
+                    No categories available
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Products Section */}
-        <div className="bg-black py-6 md:py-12">
-          {/* Add your products display logic here */}
+          {/* Products Section */}
+          <div className="bg-black py-6 md:py-12">
+            {/* Add your products display logic here */}
+          </div>
         </div>
-      </div>
+      )}
     </Layout>
   );
 };

@@ -63,7 +63,18 @@ const ProductDetails = () => {
     setImageLoading(false); // Image failed to load
   };
 
-  if (loading) return <div>Loading...</div>; // Show loading state
+  const LoadingScreen = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="text-center">
+        <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"></div>
+        <p className="mt-4 text-white text-xl font-semibold">
+          Loading Product...
+        </p>
+      </div>
+    </div>
+  );
+
+  if (loading) return <LoadingScreen />; // Show loading screen
 
   return (
     <Layout title={`Product Details - ${product?.name || "Loading..."}`}>

@@ -13,6 +13,7 @@ const CategoryProduct = () => {
   const [category, setCategory] = useState({});
   const [radio, setRadio] = useState([]); // Selected price range
   const [filteredProducts, setFilteredProducts] = useState([]); // Products after applying the filter
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     if (params?.slug) getProductsByCat();
@@ -27,8 +28,10 @@ const CategoryProduct = () => {
       setProducts(data?.products);
       setCategory(data?.category);
       setFilteredProducts(data?.products); // Set initial filtered products to all products
+      setLoading(false); // Set loading to false once data is fetched
     } catch (error) {
       console.log(error);
+      setLoading(false); // Set loading to false even if there is an error
     }
   };
 
@@ -50,8 +53,20 @@ const CategoryProduct = () => {
     setFilteredProducts(products); // Reset the product list
   };
 
+  const LoadingScreen = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="text-center">
+        <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"></div>
+        <p className="mt-4 text-white text-xl font-semibold">
+          Loading Products...
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <Layout>
+      {loading && <LoadingScreen />}
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
         <Breadcrumbs categoryName={category?.name} />
         <h1 className="text-center text-4xl sm:text-6xl font-bold mb-2 mt-16">
@@ -64,7 +79,9 @@ const CategoryProduct = () => {
           {/* Filter section */}
           <div className="lg:w-1/5 border-b lg:border-r border-gray-700 pb-4 lg:pb-0 lg:pr-4">
             <div className="bg-[#161616] p-4 rounded-lg">
-              <h3 className="text-lg sm:text-xl font-bold mb-4">Filter By Price</h3>
+              <h3 className="text-lg sm:text-xl font-bold mb-4">
+                Filter By Price
+              </h3>
               <Radio.Group
                 onChange={(e) => setRadio(e.target.value)}
                 className="flex flex-col gap-2"

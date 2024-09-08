@@ -311,10 +311,9 @@ export const orderStatusController = async (req, res) => {
       success: false,
       message: "Error While Updateing Order",
       error,
-    });
-  }
+    });
+  }
 };
-
 
 // Get all users (admin only)
 export const getAllUsersController = async (req, res) => {
@@ -347,7 +346,9 @@ export const deleteUserController = async (req, res) => {
 
     // Prevent deleting admin accounts
     if (userToDelete.role === 1) {
-      return res.status(403).json({ error: "You cannot delete an admin account" });
+      return res
+        .status(403)
+        .json({ error: "You cannot delete an admin account" });
     }
 
     // Proceed to delete the user
@@ -355,7 +356,9 @@ export const deleteUserController = async (req, res) => {
     res.status(200).json({ message: "User account deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
-    res.status(500).json({ error: "An error occurred while deleting the user account" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting the user account" });
   }
 };
 
@@ -370,9 +373,13 @@ export const deleteOwnAccountController = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "Your account has been deleted successfully" });
+    res
+      .status(200)
+      .json({ message: "Your account has been deleted successfully" });
   } catch (error) {
     console.error("Error deleting own account:", error);
-    res.status(500).json({ error: "An error occurred while deleting your account" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while deleting your account" });
   }
 };
