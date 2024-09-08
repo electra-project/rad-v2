@@ -6,13 +6,13 @@ import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge, Dropdown, Menu } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-
-  console.log(categories);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const handleLogout = () => {
     setAuth({
@@ -22,6 +22,7 @@ const Header = () => {
     });
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
+    navigate("/"); // Redirect to home page after logout
   };
 
   const userMenu = (
@@ -29,21 +30,17 @@ const Header = () => {
       <Menu.Item key="profile">
         <Link
           to={`/dashboard/${
-            auth?.user?.role === 1 ? "user/profile" : "user/proifle"
+            auth?.user?.role === 1 ? "user/profile" : "user/profile"
           }`}
         >
           Profile
         </Link>
       </Menu.Item>
-      <Menu.Item key="dashboard">
-        <Link
-          to={`/dashboard/${
-            auth?.user?.role === 1 ? "admin/create-category" : "user"
-          }`}
-        >
-          Dashboard
-        </Link>
-      </Menu.Item>
+      {auth?.user?.role === 1 && (
+        <Menu.Item key="dashboard">
+          <Link to={`/dashboard/admin/create-category`}>Dashboard</Link>
+        </Menu.Item>
+      )}
       <Menu.Item key="logout" onClick={handleLogout}>
         Logout
       </Menu.Item>
