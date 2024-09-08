@@ -5,12 +5,14 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
+import useCategory from "../../hooks/useCategory";
+
 const { Option } = Select;
 
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [categories, setCategories] = useState([]);
+  const categories = useCategory();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -30,7 +32,6 @@ const UpdateProduct = () => {
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
-      setPrice(data.product.price);
       setQuantity(data.product.quantity);
       setShipping(data.product.shipping);
       setCategory(data.product.category._id);
@@ -38,27 +39,10 @@ const UpdateProduct = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getSingleProduct();
     //eslint-disable-next-line
-  }, []);
-  //get all category
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/category/get-category"
-      );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something wwent wrong in getting catgeory");
-    }
-  };
-
-  useEffect(() => {
-    getAllCategory();
   }, []);
 
   //create product function
@@ -72,12 +56,12 @@ const UpdateProduct = () => {
       productData.append("quantity", quantity);
       photo && productData.append("photo", photo);
       productData.append("category", category);
-      const { data } = axios.put(
+      const { data } = await axios.put(
         `http://localhost:8080/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {
-        toast.error(data?.message);
+        toast.success("Product Updated Successfully");
       } else {
         toast.success("Product Updated Successfully");
         navigate("/dashboard/admin/products");
@@ -103,8 +87,9 @@ const UpdateProduct = () => {
       toast.error("Something went wrong");
     }
   };
+
   return (
-    <Layout title={"Dashboard - Create Product"}>
+    <Layout title={"Dashboard - Update Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -124,11 +109,15 @@ const UpdateProduct = () => {
                 }}
                 value={category}
               >
-                {categories?.map((c) => (
-                  <Option key={c._id} value={c._id}>
-                    {c.name}
-                  </Option>
-                ))}
+                {categories.length > 0 ? (
+                  categories.map((c) => (
+                    <Option key={c._id} value={c._id}>
+                      {c.name}
+                    </Option>
+                  ))
+                ) : (
+                  <Option disabled>No categories available</Option>
+                )}
               </Select>
               <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
@@ -181,7 +170,6 @@ const UpdateProduct = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
-
               <div className="mb-3">
                 <input
                   type="number"
