@@ -10,11 +10,11 @@ import Breadcrumbs from "../components/Breadcrumbs";
 const ProductDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null); // Set initial state to null
+  const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [cart, setCart] = useCart();
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [imageLoading, setImageLoading] = useState(true); // Track image loading
+  const [loading, setLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
     if (params?.slug) getProduct();
@@ -30,7 +30,7 @@ const ProductDetails = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // Set loading to false once data is fetched
+      setLoading(false);
     }
   };
 
@@ -56,11 +56,11 @@ const ProductDetails = () => {
   };
 
   const handleImageLoad = () => {
-    setImageLoading(false); // Image loaded successfully
+    setImageLoading(false);
   };
 
   const handleImageError = () => {
-    setImageLoading(false); // Image failed to load
+    setImageLoading(false);
   };
 
   const LoadingScreen = () => (
@@ -74,7 +74,7 @@ const ProductDetails = () => {
     </div>
   );
 
-  if (loading) return <LoadingScreen />; // Show loading screen
+  if (loading) return <LoadingScreen />;
 
   return (
     <Layout title={`Product Details - ${product?.name || "Loading..."}`}>
@@ -109,15 +109,30 @@ const ProductDetails = () => {
               <p className="mb-2">
                 Category: {product?.category?.name || "Loading..."}
               </p>
+              <p className="mb-2 font-semibold text-red-500">
+                {product?.quantity === 0
+                  ? "Out of Stock"
+                  : `Stock: ${product?.quantity}`}
+              </p>
             </div>
-            <Button
-              type="primary"
-              className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg font-semibold"
-              onClick={handleAddToCart}
-              disabled={!product} // Disable button if product is not loaded
-            >
-              ADD TO CART
-            </Button>
+            {product?.quantity > 0 ? (
+              <Button
+                type="primary"
+                className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg font-semibold"
+                onClick={handleAddToCart}
+              >
+                ADD TO CART
+              </Button>
+            ) : (
+              <Button
+                type="default"
+                className="w-full text-gray-200 h-12 text-lg font-semibold"
+                style={{ backgroundColor: "#FF4D4F" }}
+                disabled
+              >
+                OUT OF STOCK
+              </Button>
+            )}
           </div>
         </div>
 
@@ -129,7 +144,7 @@ const ProductDetails = () => {
           {relatedProducts?.map((p) => (
             <div
               key={p._id}
-              className="bg-[#222222] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg"
+              className="bg-[#222222] rounded-lg overflow-hidden flex flex-col"
               onClick={() => navigate(`/product/${p.slug}`)}
             >
               <img
@@ -137,11 +152,8 @@ const ProductDetails = () => {
                 className="w-full h-64 object-cover"
                 alt={p.name}
               />
-              <div className="p-4">
-                <h3 className="font-bold text-lg mb-2">{p.name}</h3>
-                <p className="text-sm mb-2">
-                  {p.description.substring(0, 60)}...
-                </p>
+              <div className="p-4 flex flex-col flex-grow">
+                <h3 className="font-bold text-lg mb-2 truncate">{p.name}</h3>
                 <p className="text-red-500 font-bold mb-2">
                   රු. {p.price.toLocaleString()}
                 </p>

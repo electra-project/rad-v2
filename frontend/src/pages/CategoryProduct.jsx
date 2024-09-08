@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Radio, Button } from "antd";
+import { Radio, Button, Checkbox } from "antd";
 import { Prices } from "../components/Prices";
 import Layout from "../components/Layout/Layout";
 import Breadcrumbs from "../components/Breadcrumbs";
+import { useCart } from "../context/cart"; // Import the cart context
+import toast from "react-hot-toast";
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -14,6 +16,8 @@ const CategoryProduct = () => {
   const [radio, setRadio] = useState([]); // Selected price range
   const [filteredProducts, setFilteredProducts] = useState([]); // Products after applying the filter
   const [loading, setLoading] = useState(true); // Loading state
+  const [cart, setCart] = useCart(); // Use cart context
+  const [showOutOfStock, setShowOutOfStock] = useState(true); // State to show/hide out of stock products
 
   useEffect(() => {
     if (params?.slug) getProductsByCat();
@@ -35,22 +39,41 @@ const CategoryProduct = () => {
     }
   };
 
-  // Apply price filter when the radio value changes
+  // Apply price filter and out of stock visibility when the radio value or showOutOfStock changes
   useEffect(() => {
+    let filtered = products;
+
+    // Apply price filter
     if (radio.length > 0) {
-      const filtered = products.filter(
+      filtered = filtered.filter(
         (p) => p.price >= radio[0] && p.price <= radio[1]
       );
-      setFilteredProducts(filtered);
-    } else {
-      setFilteredProducts(products); // Show all products if no filter is applied
     }
-  }, [radio, products]);
+
+    // Apply out of stock filter
+    if (!showOutOfStock) {
+      filtered = filtered.filter((p) => p.quantity > 0);
+    }
+
+    setFilteredProducts(filtered);
+  }, [radio, products, showOutOfStock]);
 
   // Handle filter reset
   const resetFilters = () => {
     setRadio([]); // Clear the selected price range
+    setShowOutOfStock(true); // Show all products including out of stock
     setFilteredProducts(products); // Reset the product list
+  };
+
+  // Handle Add to Cart
+  const handleAddToCart = (product) => {
+    if (product) {
+      setCart([...cart, product]);
+      localStorage.setItem("cart", JSON.stringify([...cart, product]));
+      toast.success("Item Added to Cart");
+    } else {
+      toast.error("Failed to add item to cart. Please try again.");
+    }
   };
 
   const LoadingScreen = () => (
@@ -93,6 +116,13 @@ const CategoryProduct = () => {
                   </Radio>
                 ))}
               </Radio.Group>
+              <Checkbox
+                className="text-white mt-4"
+                checked={showOutOfStock}
+                onChange={(e) => setShowOutOfStock(e.target.checked)}
+              >
+                Show Out of Stock Products
+              </Checkbox>
               <Button
                 type="primary"
                 danger
@@ -110,27 +140,61 @@ const CategoryProduct = () => {
             {filteredProducts?.map((p) => (
               <div
                 key={p._id}
-                className="bg-[#161616] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg"
-                onClick={() => navigate(`/product/${p.slug}`)} // Making the entire card clickable
+                className="bg-[#161616] rounded-lg overflow-hidden relative flex flex-col"
               >
                 <img
                   src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
                   className="w-full h-48 sm:h-64 object-cover" // Ensure a responsive size
                   alt={p.name}
                 />
-                <div className="p-4 text-center">
-                  <h3 className="font-bold text-lg mb-2">{p.name}</h3>
-                  <p className="text-sm">{p.description.substring(0, 60)}...</p>
+                {p.quantity === 0 && (
+                  <div className="absolute top-0 left-0 bg-red-600 text-white text-s font-bold px-2 py-1">
+                    OUT OF STOCK
+                  </div>
+                )}
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="font-bold text-lg mb-2 truncate">{p.name}</h3>
                   <p className="text-red-500 font-bold mb-4">
                     රු. {p.price.toLocaleString()}
                   </p>
-                  <Button
-                    type="primary"
-                    className="w-full bg-gray-500"
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
-                    More Details
-                  </Button>
+                  <div className="flex flex-col gap-2 mt-auto">
+                    <Button
+                      type="primary"
+                      style={{
+                        backgroundColor:
+                          p.quantity === 0 ? "#ef4444" : "#3b82f6",
+                        borderColor: p.quantity === 0 ? "#ef4444" : "#3b82f6",
+                      }}
+                      className="w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (p.quantity > 0) {
+                          handleAddToCart(p);
+                        }
+                      }}
+                      disabled={p.quantity === 0}
+                    >
+                      {p.quantity === 0 ? "Cannot Add to Cart" : "Add to Cart"}
+                    </Button>
+                    <Button
+                      type="primary"
+                      style={{
+                        backgroundColor:
+                          p.quantity === 0 ? "#ef4444" : "#3b82f6",
+                        borderColor: p.quantity === 0 ? "#ef4444" : "#3b82f6",
+                      }}
+                      className="w-full"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (p.quantity > 0) {
+                          navigate(`/product/${p.slug}`);
+                        }
+                      }}
+                      disabled={p.quantity === 0}
+                    >
+                      More Details
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
