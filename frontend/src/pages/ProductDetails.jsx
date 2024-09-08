@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useCart } from "../context/cart";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [cart, setCart] = useCart();
 
   //initalp details
   useEffect(() => {
@@ -62,7 +64,11 @@ const ProductDetails = () => {
             })}
           </h6>
           <h6>Category : {product?.category?.name}</h6>
-          <button class="btn btn-secondary ms-1">ADD TO CART</button>
+          <button class="btn btn-secondary ms-1" onClick={() => {
+    setCart([...cart, product]); // Add the current product to the cart
+    localStorage.setItem("cart", JSON.stringify([...cart, product])); // Save it in localStorage
+    toast.success("Item Added to Cart");
+  }}>ADD TO CART</button>
         </div>
       </div>
       <hr />
