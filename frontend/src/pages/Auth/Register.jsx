@@ -33,20 +33,15 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-black flex min-h-screen">
-      <div className="w-1/2 relative overflow-hidden">
+    <div className="bg-black flex flex-col md:flex-row min-h-screen">
+      <div className="md:w-1/2 relative overflow-hidden">
         <img
-          alt="just a red background I found"
-          className="absolute inset-0 w-full h-full object-cover object-left-center"
-          style={{
-            objectPosition: "20% center",
-            transform: "scale(1)",
-            transformOrigin: "center",
-          }}
+          alt="Background"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           src="https://www.aorus.com/event/event/q123-amd-gamebundle/assets/images/Feature2-bg.jpg"
         />
         <div className="absolute top-8 left-8 text-white">
-          <h1 className="text-3xl font-bold">AMU</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">AMU</h1>
         </div>
         <div className="absolute top-8 right-8">
           <button
@@ -58,11 +53,11 @@ const Register = () => {
           </button>
         </div>
         <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-xl font-semibold">Electra Technologies</p>
+          <p className="text-lg md:text-xl font-semibold">Electra Technologies</p>
         </div>
       </div>
-      <div className="w-1/2 p-12 flex flex-col justify-center min-h-screen">
-        <h2 className="text-6xl font-bold text-white mb-4">
+      <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center min-h-screen">
+        <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
           Create an account
         </h2>
         <p className="text-gray-400 mb-6">
@@ -88,8 +83,8 @@ const Register = () => {
               <p className="text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
-          <div className="mb-4 flex space-x-4">
-            <div className="w-1/2">
+          <div className="mb-4 flex flex-col md:flex-row md:space-x-4">
+            <div className="w-full md:w-1/2 mb-4 md:mb-0">
               <input
                 className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none"
                 placeholder="Enter Your Email"
@@ -105,7 +100,7 @@ const Register = () => {
                 <p className="text-red-500 mt-1">{errors.email.message}</p>
               )}
             </div>
-            <div className="w-1/2 relative">
+            <div className="w-full md:w-1/2 relative">
               <input
                 className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none"
                 placeholder="Enter Your Password"
@@ -124,8 +119,8 @@ const Register = () => {
               <i className="fas fa-eye absolute right-3 top-3 text-gray-400"></i>
             </div>
           </div>
-          <div className="mb-4 flex space-x-4">
-            <div className="w-1/2">
+          <div className="mb-4 flex flex-col md:flex-row md:space-x-4">
+            <div className="w-full md:w-1/2 mb-4 md:mb-0">
               <input
                 className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none"
                 placeholder="Enter Your Phone"
@@ -141,7 +136,7 @@ const Register = () => {
                 <p className="text-red-500 mt-1">{errors.phone.message}</p>
               )}
             </div>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <input
                 className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none"
                 placeholder="Enter Your Address"

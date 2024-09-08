@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
@@ -12,7 +12,8 @@ const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     setAuth({
@@ -22,7 +23,7 @@ const Header = () => {
     });
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
-    navigate("/"); // Redirect to home page after logout
+    navigate("/");
   };
 
   const userMenu = (
@@ -59,10 +60,9 @@ const Header = () => {
 
   return (
     <div className="bg-[#161616] text-white">
-      <header className="flex items-center justify-between p-4">
-        {/* Left Side (Logo and Navigation) */}
-        <div className="flex items-center space-x-6">
-          {/* Logo and Title */}
+      <header className="flex flex-col md:flex-row items-center justify-between p-4">
+        {/* Logo and Hamburger Menu */}
+        <div className="flex items-center justify-between w-full md:w-auto mb-4 md:mb-0">
           <Link to="/" className="flex items-center space-x-4">
             <img
               alt="Company logo with a red and white design"
@@ -73,25 +73,34 @@ const Header = () => {
             />
             <h1 className="text-sm font-bold text-white m-0">Electra</h1>
           </Link>
-
-          {/* Navigation Links */}
-          <nav className="flex items-center space-x-6">
-            <NavLink to="/" className="text-xs hover:text-gray-400">
-              HOME
-            </NavLink>
-            <NavLink to="/category" className="text-xs hover:text-gray-400">
-              STORE
-            </NavLink>
-            <NavLink to="/contact" className="text-xs hover:text-gray-400">
-              CONTACT US
-            </NavLink>
-          </nav>
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden text-white focus:outline-none"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
         </div>
 
+        {/* Navigation Links (Mobile) */}
+        <nav className={`${isMenuOpen ? 'flex' : 'hidden'} md:hidden flex-col w-full space-y-4 mb-4`}>
+          <NavLink to="/" className="text-sm hover:text-gray-400">HOME</NavLink>
+          <NavLink to="/category" className="text-sm hover:text-gray-400">STORE</NavLink>
+          <NavLink to="/contact" className="text-sm hover:text-gray-400">CONTACT US</NavLink>
+        </nav>
+
+        {/* Navigation Links (Desktop) */}
+        <nav className="hidden md:flex items-center space-x-6">
+          <NavLink to="/" className="text-xs hover:text-gray-400">HOME</NavLink>
+          <NavLink to="/category" className="text-xs hover:text-gray-400">STORE</NavLink>
+          <NavLink to="/contact" className="text-xs hover:text-gray-400">CONTACT US</NavLink>
+        </nav>
+
         {/* Search and Category Selector */}
-        <div className="flex items-center space-x-0 ml-auto flex-grow max-w-2xl border border-gray-700 ">
-          <div className="flex-grow flex">
-            <SearchInput />
+        <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+          <div className="flex items-center w-full md:w-auto">
+            <SearchInput className="w-full md:w-64 lg:w-80" />
             <Dropdown overlay={categoryMenu} placement="bottomRight">
               <button className="text-white px-4 py-2 text-sm rounded-r-md hover:bg-gray-800 focus:outline-none">
                 SELECT CATEGORY
@@ -100,7 +109,7 @@ const Header = () => {
           </div>
           <button
             type="submit"
-            className=" text-white p-2 rounded-md ml-2 hover:bg-gray-800 focus:outline-none"
+            className="text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +129,7 @@ const Header = () => {
         </div>
 
         {/* User Actions (Login/Register, Cart) */}
-        <div className="flex items-center space-x-6 ml-4">
+        <div className="flex items-center space-x-6 mt-4 md:mt-0">
           {!auth?.user ? (
             <NavLink to="/login" className="text-xs hover:text-gray-400">
               LOGIN / REGISTER
@@ -134,7 +143,7 @@ const Header = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="white"
-                  className="size-6"
+                  className="w-6 h-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -142,7 +151,7 @@ const Header = () => {
                     d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
-                <span>{auth.user.name}</span>
+                <span className="hidden md:inline">{auth.user.name}</span>
               </button>
             </Dropdown>
           )}

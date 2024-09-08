@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import UserMenu from "../../components/Layout/UserMenu";
 import Layout from "./../../components/Layout/Layout";
 import { useAuth } from "../../context/auth";
@@ -8,6 +9,8 @@ import axios from "axios";
 const Profile = () => {
   // context
   const [auth, setAuth] = useAuth();
+  //
+  const navigate = useNavigate();
   // state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -54,14 +57,34 @@ const Profile = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    if (confirmDelete) {
+      try {
+        const { data } = await axios.delete("http://localhost:8080/api/v1/auth/delete-own-account");
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setAuth({ user: null, token: "" });
+          localStorage.removeItem("auth");
+          toast.success("Your account has been deleted successfully");
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while deleting your account");
+      }
+    }
+  };
+
   return (
     <Layout title="Your Profile">
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
-        <div className="flex gap-4 p-4">
-          <div className="w-1/4">
+        <div className="flex flex-col md:flex-row gap-4 p-4">
+          <div className="w-full md:w-1/4">
             <UserMenu />
           </div>
-          <div className="w-3/4 bg-[#222222] p-6 rounded-lg">
+          <div className="w-full md:w-3/4 bg-[#222222] p-6 rounded-lg">
             <h4 className="text-2xl font-bold mb-6">USER PROFILE</h4>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -118,6 +141,12 @@ const Profile = () => {
                 UPDATE
               </button>
             </form>
+            <button
+              onClick={handleDeleteAccount}
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold mt-4"
+            >
+              DELETE ACCOUNT
+            </button>
           </div>
         </div>
       </div>

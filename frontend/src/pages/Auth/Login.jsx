@@ -39,8 +39,8 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-black flex min-h-screen">
-      <div className="w-1/2 relative overflow-hidden">
+    <div className="bg-black flex flex-col lg:flex-row min-h-screen">
+      <div className="lg:w-1/2 relative overflow-hidden">
         {/* <img
           alt="login background"
           className="absolute inset-0 w-full h-full object-cover object-left-center"
@@ -67,7 +67,7 @@ const Login = () => {
           playsInline
         />
         <div className="absolute top-8 left-8 text-white">
-          <h1 className="text-3xl font-bold">AMU</h1>
+          <h1 className="text-3xl font-bold md:text-4xl">AMU</h1>
         </div>
         <div className="absolute top-8 right-8">
           <button
@@ -79,14 +79,14 @@ const Login = () => {
           </button>
         </div>
         <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-xl font-semibold">Electra Technologies</p>
+          <p className="text-xl font-semibold md:text-2xl">Electra Technologies</p>
         </div>
       </div>
-      <div className="w-1/2 p-12 flex flex-col justify-center min-h-screen">
-        <h2 className="text-6xl font-bold text-white mb-4">
+      <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center min-h-screen">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
           Login to your account
         </h2>
-        <p className="text-gray-400 mb-6">
+        <p className="text-gray-400 mb-6 text-base md:text-lg">
           Don't have an account?
           <a className="text-blue-400 pl-2" href="/register">
             Sign up
@@ -115,8 +115,8 @@ const Login = () => {
             />
             <i className="fas fa-eye absolute right-3 top-3 text-gray-400"></i>
           </div>
-          <div className="mb-6 flex justify-between items-center">
-            <div className="flex items-center">
+          <div className="mb-6 flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center mb-4 sm:mb-0">
               <input className="mr-2" id="remember" type="checkbox" />
               <label className="text-gray-400" htmlFor="remember">
                 Remember me

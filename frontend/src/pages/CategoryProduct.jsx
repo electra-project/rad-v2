@@ -15,11 +15,11 @@ const CategoryProduct = () => {
   const [filteredProducts, setFilteredProducts] = useState([]); // Products after applying the filter
 
   useEffect(() => {
-    if (params?.slug) getPrductsByCat();
+    if (params?.slug) getProductsByCat();
   }, [params?.slug]);
 
   // Fetch products by category
-  const getPrductsByCat = async () => {
+  const getProductsByCat = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:8080/api/v1/product/product-category/${params.slug}`
@@ -51,21 +51,20 @@ const CategoryProduct = () => {
   };
 
   return (
-    // <div className="w-full p-4 bg-[#0f172a] text-white min-h-screen"></div>
     <Layout>
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
         <Breadcrumbs categoryName={category?.name} />
-        <h1 className="text-center text-6xl font-bold mb-2 mt-16">
+        <h1 className="text-center text-4xl sm:text-6xl font-bold mb-2 mt-16">
           {category?.name?.toUpperCase()}
         </h1>
-        <h2 className="text-center text-xl mb-6">
+        <h2 className="text-center text-lg sm:text-xl mb-6">
           {filteredProducts?.length} results found
         </h2>
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Filter section */}
-          <div className="w-1/5 border-r border-gray-700 pr-4">
+          <div className="lg:w-1/5 border-b lg:border-r border-gray-700 pb-4 lg:pb-0 lg:pr-4">
             <div className="bg-[#161616] p-4 rounded-lg">
-              <h3 className="text-xl font-bold mb-4">Filter By Price</h3>
+              <h3 className="text-lg sm:text-xl font-bold mb-4">Filter By Price</h3>
               <Radio.Group
                 onChange={(e) => setRadio(e.target.value)}
                 className="flex flex-col gap-2"
@@ -90,21 +89,16 @@ const CategoryProduct = () => {
           </div>
 
           {/* Products section */}
-          <div className="w-4/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 justify-center">
+          <div className="lg:w-4/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredProducts?.map((p) => (
               <div
                 key={p._id}
-                className="bg-[#161616] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg max-w-xs mx-auto"
+                className="bg-[#161616] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg"
                 onClick={() => navigate(`/product/${p.slug}`)} // Making the entire card clickable
               >
                 <img
                   src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                  className="w-64 h-64 object-cover mx-auto" // Ensure a fixed size with 250px
-                  style={{
-                    width: "250px",
-                    height: "250px",
-                    objectFit: "cover",
-                  }} // Set width and height to 250px, with object-fit cover
+                  className="w-full h-48 sm:h-64 object-cover" // Ensure a responsive size
                   alt={p.name}
                 />
                 <div className="p-4 text-center">

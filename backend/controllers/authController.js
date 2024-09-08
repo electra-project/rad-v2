@@ -314,3 +314,65 @@ export const orderStatusController = async (req, res) => {
     });
   }
 };
+
+
+// Get all users (admin only)
+export const getAllUsersController = async (req, res) => {
+  try {
+    const users = await userModel.find().select("-password -answer");
+    res.status(200).send({
+      success: true,
+      message: "All users fetched successfully",
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error fetching users",
+      error,
+    });
+  }
+};
+
+export const deleteUserController = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Check if the user exists
+    const userToDelete = await userModel.findById(userId);
+    if (!userToDelete) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Prevent deleting admin accounts
+    if (userToDelete.role === 1) {
+      return res.status(403).json({ error: "You cannot delete an admin account" });
+    }
+
+    // Proceed to delete the user
+    await userModel.findByIdAndDelete(userId);
+    res.status(200).json({ message: "User account deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "An error occurred while deleting the user account" });
+  }
+};
+
+export const deleteOwnAccountController = async (req, res) => {
+  try {
+    const userId = req.user._id; // Get the user ID from the authenticated request
+
+    // Find and delete the user
+    const deletedUser = await userModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "Your account has been deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting own account:", error);
+    res.status(500).json({ error: "An error occurred while deleting your account" });
+  }
+};

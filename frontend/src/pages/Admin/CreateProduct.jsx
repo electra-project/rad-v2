@@ -52,11 +52,11 @@ const CreateProduct = () => {
   return (
     <Layout title={"Dashboard - Create Product"}>
       <div className="w-full p-6 bg-[#1A1A1A] text-white min-h-screen">
-        <div className="flex gap-6">
-          <div className="w-1/4">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-1/4">
             <AdminMenu />
           </div>
-          <div className="w-3/4">
+          <div className="w-full md:w-3/4">
             <h1 className="text-2xl font-bold mb-6">Create Product</h1>
             <div className="bg-[#222222] p-6 rounded-lg shadow-lg">
               <Select
@@ -106,7 +106,7 @@ const CreateProduct = () => {
                   type="text"
                   value={name}
                   placeholder="Product Name"
-                  className="form-control bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -114,7 +114,7 @@ const CreateProduct = () => {
                 <textarea
                   value={description}
                   placeholder="Product Description"
-                  className="form-control bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
@@ -123,7 +123,7 @@ const CreateProduct = () => {
                   type="number"
                   value={price}
                   placeholder="Price"
-                  className="form-control bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
@@ -132,7 +132,7 @@ const CreateProduct = () => {
                   type="number"
                   value={quantity}
                   placeholder="Quantity"
-                  className="form-control bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>

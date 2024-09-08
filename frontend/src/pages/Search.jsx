@@ -38,19 +38,19 @@ const Search = () => {
     <Layout title={"Search results"}>
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
         <Breadcrumbs />
-        <h1 className="text-center text-6xl font-bold mb-2 mt-16">
+        <h1 className="text-center text-4xl sm:text-6xl font-bold mb-2 mt-16">
           Search Results
         </h1>
-        <h2 className="text-center text-xl mb-6">
+        <h2 className="text-center text-lg sm:text-xl mb-6">
           {filteredResults?.length < 1
             ? "No Products Found"
             : `${filteredResults?.length} results found`}
         </h2>
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Filter section */}
-          <div className="w-1/5 border-r border-gray-700 pr-4">
+          <div className="lg:w-1/5 border-b lg:border-r border-gray-700 pb-4 lg:pb-0 lg:pr-4">
             <div className="bg-[#161616] p-4 rounded-lg">
-              <h3 className="text-xl font-bold mb-4">Filter By Price</h3>
+              <h3 className="text-lg sm:text-xl font-bold mb-4">Filter By Price</h3>
               <Radio.Group
                 onChange={(e) => setRadio(e.target.value)}
                 className="flex flex-col gap-2"
@@ -75,21 +75,16 @@ const Search = () => {
           </div>
 
           {/* Products section */}
-          <div className="w-4/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 justify-center">
+          <div className="lg:w-4/5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredResults?.map((p) => (
               <div
                 key={p._id}
-                className="bg-[#161616] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg max-w-xs mx-auto"
+                className="bg-[#161616] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg"
                 onClick={() => navigate(`/product/${p.slug}`)}
               >
                 <img
                   src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                  className="w-64 h-64 object-cover mx-auto"
-                  style={{
-                    width: "250px",
-                    height: "250px",
-                    objectFit: "cover",
-                  }}
+                  className="w-full h-48 sm:h-64 object-cover"
                   alt={p.name}
                 />
                 <div className="p-4 text-center">

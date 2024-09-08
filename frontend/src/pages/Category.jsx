@@ -13,35 +13,26 @@ const Category = () => {
 
   return (
     <Layout title={"All Categories"}>
-      <div className="bg-[#1A1A1A]">
-        <div className="container bg-[#1A1A1A] mt-100">
-          <div className="row container">
+      <div className="bg-[#1A1A1A] py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {categories.map((category) => (
-              <div className="col-md-4 mt-5 mb-3 gx-3 gy-3" key={category._id}>
-                <div
-                  className="card h-100 text-center text-white"
-                  style={{
-                    backgroundImage: `url(${getCategoryImageUrl(
-                      category._id
-                    )})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                    minHeight: "250px",
-                  }}
+              <div
+                className="relative bg-cover bg-center bg-no-repeat text-center text-white"
+                style={{
+                  backgroundImage: `url(${getCategoryImageUrl(
+                    category._id
+                  )})`,
+                  minHeight: "250px",
+                }}
+                key={category._id}
+              >
+                <Link
+                  to={`/category/${category.slug}`}
+                  className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50"
                 >
-                  <Link
-                    to={`/category/${category.slug}`}
-                    className="btn cat-btn h-100 flex items-center justify-center"
-                    style={{
-                      backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent overlay
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  >
-                    <h2 className="text-white">{category.name}</h2>
-                  </Link>
-                </div>
+                  <h2 className="text-lg md:text-2xl lg:text-3xl font-bold">{category.name}</h2>
+                </Link>
               </div>
             ))}
           </div>

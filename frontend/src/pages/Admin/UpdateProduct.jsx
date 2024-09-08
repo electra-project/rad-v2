@@ -22,7 +22,7 @@ const UpdateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
-  //get single product
+  // Get single product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
@@ -42,10 +42,10 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     getSingleProduct();
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
-  //create product function
+  // Update product function
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -62,25 +62,25 @@ const UpdateProduct = () => {
       );
       if (data?.success) {
         toast.success("Product Updated Successfully");
-      } else {
-        toast.success("Product Updated Successfully");
         navigate("/dashboard/admin/products");
+      } else {
+        toast.error("Product Update Failed");
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
-  //delete a product
+  // Delete product function
   const handleDelete = async () => {
     try {
-      let answer = window.prompt("Are You Sure want to delete this product ? ");
+      let answer = window.confirm("Are you sure you want to delete this product?");
       if (!answer) return;
       const { data } = await axios.delete(
         `http://localhost:8080/api/v1/product/delete-product/${id}`
       );
-      toast.success("Product Deleted Succfully");
+      toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/products");
     } catch (error) {
       console.log(error);
@@ -90,23 +90,21 @@ const UpdateProduct = () => {
 
   return (
     <Layout title={"Dashboard - Update Product"}>
-      <div className="container-fluid m-3 p-3">
-        <div className="row">
-          <div className="col-md-3">
+      <div className="p-6 bg-gray-900 text-white min-h-screen">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="w-full md:w-1/4">
             <AdminMenu />
           </div>
-          <div className="col-md-9">
-            <h1>Update Product</h1>
-            <div className="m-1 w-75">
+          <div className="w-full md:w-3/4">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6">Update Product</h1>
+            <div className="space-y-6">
               <Select
                 bordered={false}
                 placeholder="Select a category"
                 size="large"
                 showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
+                className="w-full mb-4"
+                onChange={(value) => setCategory(value)}
                 value={category}
               >
                 {categories.length > 0 ? (
@@ -119,8 +117,9 @@ const UpdateProduct = () => {
                   <Option disabled>No categories available</Option>
                 )}
               </Select>
-              <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
+
+              <div className="mb-4">
+                <label className="block text-center bg-gray-800 p-4 rounded-lg cursor-pointer">
                   {photo ? photo.name : "Upload Photo"}
                   <input
                     type="file"
@@ -130,88 +129,89 @@ const UpdateProduct = () => {
                     hidden
                   />
                 </label>
-              </div>
-              <div className="mb-3">
-                {photo ? (
-                  <div className="text-center">
+                <div className="text-center mt-4">
+                  {photo ? (
                     <img
                       src={URL.createObjectURL(photo)}
                       alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
+                      className="mx-auto h-48 object-cover"
                     />
-                  </div>
-                ) : (
-                  <div className="text-center">
+                  ) : (
                     <img
                       src={`http://localhost:8080/api/v1/product/product-photo/${id}`}
                       alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
+                      className="mx-auto h-48 object-cover"
                     />
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-              <div className="mb-3">
+
+              <div className="mb-4">
                 <input
                   type="text"
                   value={name}
-                  placeholder="write a name"
-                  className="form-control"
+                  placeholder="Product Name"
+                  className="w-full p-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
+
+              <div className="mb-4">
                 <textarea
-                  type="text"
                   value={description}
-                  placeholder="write a description"
-                  className="form-control"
+                  placeholder="Product Description"
+                  className="w-full p-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
+
+              <div className="mb-4">
                 <input
                   type="number"
                   value={price}
-                  placeholder="write a Price"
-                  className="form-control"
+                  placeholder="Product Price"
+                  className="w-full p-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
+
+              <div className="mb-4">
                 <input
                   type="number"
                   value={quantity}
-                  placeholder="write a quantity"
-                  className="form-control"
+                  placeholder="Product Quantity"
+                  className="w-full p-3 border border-gray-700 rounded-lg bg-gray-800 text-white"
                   onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
+
+              <div className="mb-4">
                 <Select
                   bordered={false}
-                  placeholder="Select Shipping "
+                  placeholder="Select Shipping"
                   size="large"
                   showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
-                  value={shipping ? "yes" : "No"}
+                  className="w-full"
+                  onChange={(value) => setShipping(value)}
+                  value={shipping ? "yes" : "no"}
                 >
                   <Option value="0">No</Option>
                   <Option value="1">Yes</Option>
                 </Select>
               </div>
-              <div className="mb-3">
-                <button className="btn btn-primary" onClick={handleUpdate}>
-                  UPDATE PRODUCT
+
+              <div className="flex gap-4">
+                <button
+                  className="w-full md:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg"
+                  onClick={handleUpdate}
+                >
+                  Update Product
                 </button>
-              </div>
-              <div className="mb-3">
-                <button className="btn btn-danger" onClick={handleDelete}>
-                  DELETE PRODUCT
+                <button
+                  className="w-full md:w-auto px-4 py-2 bg-red-600 text-white rounded-lg"
+                  onClick={handleDelete}
+                >
+                  Delete Product
                 </button>
               </div>
             </div>

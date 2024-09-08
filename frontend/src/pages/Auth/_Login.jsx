@@ -3,13 +3,12 @@ import Layout from "./../../components/Layout/Layout";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
-import "../../styles/AuthStyles.css";
 import { useAuth } from "../../context/auth";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [auth, setAuth] = useAuth();
-
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,7 +22,7 @@ const Login = () => {
         password,
       });
       if (res && res.data.success) {
-        toast.success(res.data && res.data.message);
+        toast.success(res.data.message);
         setAuth({
           ...auth,
           user: res.data.user,
@@ -39,56 +38,55 @@ const Login = () => {
       toast.error("Something went wrong");
     }
   };
+
   return (
     <Layout title="ELECTRA - LOGIN">
-      <div className="form-container " style={{ height:"500px",backgroundImage:"url('https://t3.ftcdn.net/jpg/03/55/60/70/360_F_355607062_zYMS8jaz4SfoykpWz5oViRVKL32IabTP.jpg')"}}>
-        <form onSubmit={handleSubmit} style={{borderRadius:"10px",height:"300px"}}>
-          <h4 className="title">LOGIN FORM</h4>
+      <div className="flex items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('https://t3.ftcdn.net/jpg/03/55/60/70/360_F_355607062_zYMS8jaz4SfoykpWz5oViRVKL32IabTP.jpg')" }}>
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+          <h4 className="text-2xl font-bold mb-4 text-center">LOGIN FORM</h4>
 
-          <div className="mb-3">
-            <input
-              type="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              id="exampleInputEmail1"
-              placeholder="Enter Your Email "
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200"
-              style={{width:"300px"}}
-            />
-          </div>
-          <div className="mb-3">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <input
+                type="email"
+                autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                id="exampleInputEmail1"
+                placeholder="Enter Your Email"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                id="exampleInputPassword1"
+                placeholder="Enter Your Password"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="mb-4">
+              <button
+                type="button"
+                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none"
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot Password
+              </button>
+            </div>
 
-              id="exampleInputPassword1"
-              placeholder="Enter Your Password"
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-200"
-              style={{width:"300px"}}
-            />
-          </div>
-          <div className="mb-3">
             <button
-              type="button"
-              className="btn forgot-btn"
-              onClick={() => {
-                navigate("/forgot-password");
-              }}
-              style={{width:"300px" , borderRadius:"5px"}}
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 focus:outline-none"
             >
-              Forgot Password
+              LOGIN
             </button>
-          </div>
-
-          <button type="submit" className="btn btn-primary" 
-          style={{width:"300px" , borderRadius:"5px"}}>
-            LOGIN
-          </button>
-        </form>
+          </form>
+        </div>
       </div>
     </Layout>
   );

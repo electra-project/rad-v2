@@ -113,11 +113,11 @@ const CreateCategory = () => {
   return (
     <Layout title={"Dashboard - Category"}>
       <div className="w-full p-6 bg-[#1A1A1A] text-white min-h-screen">
-        <div className="flex gap-6 p-4">
-          <div className="w-1/4">
+        <div className="flex flex-col md:flex-row gap-6 p-4">
+          <div className="w-full md:w-1/4">
             <AdminMenu />
           </div>
-          <div className="w-3/4">
+          <div className="w-full md:w-3/4">
             <div className="bg-[#222222] p-6 rounded-lg mb-6 shadow-lg">
               <CategoryForm
                 handleSubmit={handleCreate}
@@ -128,40 +128,42 @@ const CreateCategory = () => {
               />
             </div>
             <div className="bg-[#222222] p-6 rounded-lg shadow-lg">
-              <table className="w-full text-left border border-gray-700 rounded-md">
-                <thead className="bg-gray-850">
-                  <tr>
-                    <th className="p-3 text-gray-300">Name</th>
-                    <th className="p-3 text-gray-300">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categories?.map((c) => (
-                    <tr key={c._id} className="border-b border-gray-600">
-                      <td className="p-3">{c.name}</td>
-                      <td className="p-3 flex gap-2">
-                        <button
-                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                          onClick={() => {
-                            setVisible(true);
-                            setUpdatedName(c.name);
-                            setUpdatedPhoto(null); // Clear the file input
-                            setSelected(c);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                          onClick={() => handleDelete(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border border-gray-700 rounded-md">
+                  <thead className="bg-gray-850">
+                    <tr>
+                      <th className="p-3 text-gray-300">Name</th>
+                      <th className="p-3 text-gray-300">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {categories?.map((c) => (
+                      <tr key={c._id} className="border-b border-gray-600">
+                        <td className="p-3">{c.name}</td>
+                        <td className="p-3 flex gap-2">
+                          <button
+                            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                            onClick={() => {
+                              setVisible(true);
+                              setUpdatedName(c.name);
+                              setUpdatedPhoto(null); // Clear the file input
+                              setSelected(c);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                            onClick={() => handleDelete(c._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <Modal
               onCancel={() => setVisible(false)}

@@ -36,13 +36,13 @@ const AdminMenu = () => {
             Orders
           </NavLink>
           {/* Uncomment if you need the Users link */}
-          {/* <NavLink
+          { <NavLink
             to="/dashboard/admin/users"
             className="block p-3 rounded-lg hover:bg-blue-600 transition-colors"
             activeClassName="bg-blue-600"
           >
             Users
-          </NavLink> */}
+          </NavLink>}
         </div>
       </div>
     </div>
