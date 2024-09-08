@@ -3,7 +3,9 @@ import { useCart } from "../context/cart";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styles/ProductDetailsStyles.css";
+import { Button } from "antd";
+import toast from "react-hot-toast";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -12,11 +14,10 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [cart, setCart] = useCart();
 
-  //initalp details
   useEffect(() => {
     if (params?.slug) getProduct();
   }, [params?.slug]);
-  //getProduct
+
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
@@ -28,7 +29,7 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
-  //get similar product
+
   const getSimilarProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
@@ -39,86 +40,80 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
   return (
-    <Layout>
-      <div className="row container product-details">
-        <div className="col-md-6">
-          <img
-            src={`http://localhost:8080/api/v1/product/product-photo/${product._id}`}
-            className="card-img-top"
-            alt={product.name}
-            height="300"
-            width={"350px"}
-          />
+    <Layout title={`Product Details - ${product.name}`}>
+      <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
+        <Breadcrumbs categoryName={product?.category?.name} />
+        <div className="flex flex-col md:flex-row gap-8 mb-8">
+          <div className="md:w-1/2 bg-[#222222] p-4 rounded-lg flex justify-center items-center">
+            <img
+              src={`http://localhost:8080/api/v1/product/product-photo/${product._id}`}
+              className="w-3/4 h-auto object-cover rounded-lg"
+              alt={product.name}
+            />
+          </div>
+
+          <div className="md:w-1/2">
+            <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+            <p className="text-3xl font-bold text-red-500 mb-4">
+              රු. {product?.price?.toLocaleString()}
+            </p>
+            <div className="bg-[#222222] p-4 rounded-lg mb-4">
+              <p className="mb-2">{product.description}</p>
+              <p className="mb-2">Category: {product?.category?.name}</p>
+            </div>
+            <Button
+              type="primary"
+              className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg font-semibold"
+              onClick={() => {
+                setCart([...cart, product]);
+                localStorage.setItem(
+                  "cart",
+                  JSON.stringify([...cart, product])
+                );
+                toast.success("Item Added to Cart");
+              }}
+            >
+              ADD TO CART
+            </Button>
+          </div>
         </div>
-        <div className="col-md-6 product-details-info">
-          <h1 className="text-center">Product Details</h1>
-          <hr />
-          <h6>Name : {product.name}</h6>
-          <h6>Description : {product.description}</h6>
-          <h6>
-            Price :
-            {product?.price?.toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD",
-            })}
-          </h6>
-          <h6>Category : {product?.category?.name}</h6>
-          <button class="btn btn-secondary ms-1" onClick={() => {
-    setCart([...cart, product]); // Add the current product to the cart
-    localStorage.setItem("cart", JSON.stringify([...cart, product])); // Save it in localStorage
-    toast.success("Item Added to Cart");
-  }}>ADD TO CART</button>
-        </div>
-      </div>
-      <hr />
-      <div className="row container similar-products">
-        <h4>Similar Products ➡️</h4>
+
+        <h2 className="text-3xl font-bold mb-4">Similar Products</h2>
         {relatedProducts.length < 1 && (
           <p className="text-center">No Similar Products found</p>
         )}
-        <div className="d-flex flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {relatedProducts?.map((p) => (
-            <div className="card m-2" key={p._id}>
+            <div
+              key={p._id}
+              className="bg-[#222222] rounded-lg overflow-hidden cursor-pointer hover:shadow-lg"
+              onClick={() => navigate(`/product/${p.slug}`)}
+            >
               <img
                 src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                className="card-img-top"
+                className="w-full h-64 object-cover"
                 alt={p.name}
               />
-              <div className="card-body">
-                <div className="card-name-price">
-                  <h5 className="card-title">{p.name}</h5>
-                  <h5 className="card-title card-price">
-                    {p.price.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    })}
-                  </h5>
-                </div>
-                <p className="card-text ">
+              <div className="p-4">
+                <h3 className="font-bold text-lg mb-2">{p.name}</h3>
+                <p className="text-sm mb-2">
                   {p.description.substring(0, 60)}...
                 </p>
-                <div className="card-name-price">
-                  <button
-                    className="btn btn-info ms-1"
-                    onClick={() => navigate(`/product/${p.slug}`)}
-                  >
-                    More Details
-                  </button>
-                  {/* <button
-                  className="btn btn-dark ms-1"
-                  onClick={() => {
-                    setCart([...cart, p]);
-                    localStorage.setItem(
-                      "cart",
-                      JSON.stringify([...cart, p])
-                    );
-                    toast.success("Item Added to cart");
+                <p className="text-red-500 font-bold mb-2">
+                  රු. {p.price.toLocaleString()}
+                </p>
+                <Button
+                  type="primary"
+                  className="w-full bg-gray-500 hover:bg-gray-600"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/product/${p.slug}`);
                   }}
                 >
-                  ADD TO CART
-                </button> */}
-                </div>
+                  More Details
+                </Button>
               </div>
             </div>
           ))}
