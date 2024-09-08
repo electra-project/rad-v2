@@ -19,10 +19,10 @@ import Products from "./pages/Admin/Products";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
 import Search from "./pages/Search";
 import ProductDetails from "./pages/ProductDetails";
-import Store from "./pages/Store";
 import CategoryProduct from "./pages/CategoryProduct";
 import CartPage from "./pages/CartPage";
 import AdminOrders from "./pages/Admin/AdminOrders";
+import Category from "./pages/Category";
 
 function App() {
   return (
@@ -30,9 +30,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
-        <Route path="/store/category" element={<Store />} />
+        <Route path="/category" element={<Category />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="store/category/:slug" element={<CategoryProduct />} />
+        <Route path="/category/:slug" element={<CategoryProduct />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="user" element={<Dashboard />} />

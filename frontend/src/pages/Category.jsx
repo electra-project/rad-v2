@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useCategory from "../hooks/useCategory";
 import Layout from "../components/Layout/Layout";
 
-const Store = () => {
+const Category = () => {
   const categories = useCategory();
 
   // Helper function to get the category image URL
@@ -31,7 +31,7 @@ const Store = () => {
                   }}
                 >
                   <Link
-                    to={`/store/category/${category.slug}`}
+                    to={`/category/${category.slug}`}
                     className="btn cat-btn h-100 flex items-center justify-center"
                     style={{
                       backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent overlay
@@ -51,4 +51,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default Category;
