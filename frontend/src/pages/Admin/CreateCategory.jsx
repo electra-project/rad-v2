@@ -26,7 +26,7 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong in getting categories 1");
+      toast.error("Something went wrong in getting categories");
     }
   };
 
@@ -58,7 +58,7 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong while creating category 2");
+      toast.error("Something went wrong while creating category");
     }
   };
 
@@ -71,7 +71,6 @@ const CreateCategory = () => {
       formData.append("photo", updatedPhoto);
     }
     try {
-      console.log(formData);
       const { data } = await axios.put(
         `http://localhost:8080/api/v1/category/update-category/${selected._id}`,
         formData,
@@ -89,7 +88,7 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong while updating category 3");
+      toast.error("Something went wrong while updating category");
     }
   };
 
@@ -107,20 +106,19 @@ const CreateCategory = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong while deleting category 4");
+      toast.error("Something went wrong while deleting category");
     }
   };
 
   return (
-    <Layout title={"Dashboard - Create Category"}>
-      <div className="container-fluid m-3 p-3 dashboard">
-        <div className="row">
-          <div className="col-md-3">
+    <Layout title={"Dashboard - Category"}>
+      <div className="w-full p-6 bg-[#1A1A1A] text-white min-h-screen">
+        <div className="flex gap-6 p-4">
+          <div className="w-1/4">
             <AdminMenu />
           </div>
-          <div className="col-md-9">
-            <h1>Manage Categories</h1>
-            <div className="m-1 w-75">
+          <div className="w-3/4">
+            <div className="bg-[#222222] p-6 rounded-lg mb-6 shadow-lg">
               <CategoryForm
                 handleSubmit={handleCreate}
                 name={name}
@@ -129,21 +127,21 @@ const CreateCategory = () => {
                 setPhoto={setPhoto}
               />
             </div>
-            <div className="w-75">
-              <table className="table">
-                <thead>
+            <div className="bg-[#222222] p-6 rounded-lg shadow-lg">
+              <table className="w-full text-left border border-gray-700 rounded-md">
+                <thead className="bg-gray-850">
                   <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Actions</th>
+                    <th className="p-3 text-gray-300">Name</th>
+                    <th className="p-3 text-gray-300">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {categories?.map((c) => (
-                    <tr key={c._id}>
-                      <td>{c.name}</td>
-                      <td>
+                    <tr key={c._id} className="border-b border-gray-600">
+                      <td className="p-3">{c.name}</td>
+                      <td className="p-3 flex gap-2">
                         <button
-                          className="btn btn-primary ms-2"
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                           onClick={() => {
                             setVisible(true);
                             setUpdatedName(c.name);
@@ -154,7 +152,7 @@ const CreateCategory = () => {
                           Edit
                         </button>
                         <button
-                          className="btn btn-danger ms-2"
+                          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
                           onClick={() => handleDelete(c._id)}
                         >
                           Delete

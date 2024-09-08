@@ -33,12 +33,9 @@ const Orders = () => {
           </div>
           <div className="w-3/4">
             {orders?.map((o, i) => {
-              // Log the raw date
-              console.log("Raw createdAt:", o.createAt);
-
               // Ensure createAt is a valid date
               const createdAt = moment(o.createAt).isValid()
-                ? moment(o.createAt).format("MMMM D, YYYY, h:mm:ss A")
+                ? moment(o.createAt).fromNow()
                 : "Date unavailable";
 
               return (
