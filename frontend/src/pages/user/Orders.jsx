@@ -8,6 +8,7 @@ import moment from "moment";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [auth, setAuth] = useAuth();
+
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
@@ -22,56 +23,68 @@ const Orders = () => {
   useEffect(() => {
     if (auth?.token) getOrders();
   }, [auth?.token]);
+
   return (
-    <Layout title={"Your Orders"}>
-      <div className="container-flui p-3 m-3 dashboard">
-        <div className="row">
-          <div className="col-md-3">
+    <Layout title="Your Orders">
+      <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
+        <div className="flex gap-4 p-4">
+          <div className="w-1/4">
             <UserMenu />
           </div>
-          <div className="col-md-9">
-            <h1 className="text-center">All Orders</h1>
+          <div className="w-3/4">
             {orders?.map((o, i) => {
+              // Log the raw date
+              console.log("Raw createdAt:", o.createAt);
+
+              // Ensure createAt is a valid date
+              const createdAt = moment(o.createAt).isValid()
+                ? moment(o.createAt).format("MMMM D, YYYY, h:mm:ss A")
+                : "Date unavailable";
+
               return (
-                <div className="border shadow">
-                  <table className="table">
+                <div
+                  className="bg-[#222222] p-4 mb-4 rounded-lg shadow-lg"
+                  key={o._id}
+                >
+                  <table className="w-full mb-4 text-left">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Buyer</th>
-                        <th scope="col"> date</th>
-                        <th scope="col">Payment</th>
-                        <th scope="col">Quantity</th>
+                        <th className="p-2">#</th>
+                        <th className="p-2">Status</th>
+                        <th className="p-2">Buyer</th>
+                        <th className="p-2">Date</th>
+                        <th className="p-2">Payment</th>
+                        <th className="p-2">Quantity</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{i + 1}</td>
-                        <td>{o?.status}</td>
-                        <td>{o?.buyer?.name}</td>
-                        <td>{moment(o?.createAt).fromNow()}</td>
-                        <td>{o?.payment.success ? "Success" : "Failed"}</td>
-                        <td>{o?.products?.length}</td>
+                        <td className="p-2">{i + 1}</td>
+                        <td className="p-2">{o?.status}</td>
+                        <td className="p-2">{o?.buyer?.name}</td>
+                        <td className="p-2">{createdAt}</td>
+                        <td className="p-2">
+                          {o?.payment.success ? "Success" : "Failed"}
+                        </td>
+                        <td className="p-2">{o?.products?.length}</td>
                       </tr>
                     </tbody>
                   </table>
-                  <div className="container">
-                    {o?.products?.map((p, i) => (
-                      <div className="row mb-2 p-3 card flex-row" key={p._id}>
-                        <div className="col-md-4">
-                          <img
-                            src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
-                            className="card-img-top"
-                            alt={p.name}
-                            width="100px"
-                            height={"100px"}
-                          />
-                        </div>
-                        <div className="col-md-8">
-                          <p>{p.name}</p>
-                          <p>{p.description.substring(0, 30)}</p>
-                          <p>Price : {p.price}</p>
+                  <div className="flex flex-col">
+                    {o?.products?.map((p) => (
+                      <div
+                        className="flex items-center mb-4 p-3 bg-[#333333] rounded-lg"
+                        key={p._id}
+                      >
+                        <img
+                          src={`http://localhost:8080/api/v1/product/product-photo/${p._id}`}
+                          className="w-24 h-24 object-cover rounded-lg mr-4"
+                          alt={p.name}
+                        />
+                        <div>
+                          <p className="font-semibold">{p.name}</p>
+                          <p>{p.description.substring(0, 30)}...</p>
+                          <p className="text-red-500">Price: {p.price}</p>
                         </div>
                       </div>
                     ))}
