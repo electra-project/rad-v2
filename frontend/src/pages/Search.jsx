@@ -4,6 +4,7 @@ import { Radio, Button } from "antd";
 import { Prices } from "../components/Prices";
 import Layout from "../components/Layout/Layout";
 import { useSearch } from "../context/search";
+import Breadcrumbs from "../components/Breadcrumbs";
 
 const Search = () => {
   const [values, setValues] = useSearch();
@@ -36,6 +37,7 @@ const Search = () => {
   return (
     <Layout title={"Search results"}>
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
+        <Breadcrumbs />
         <h1 className="text-center text-6xl font-bold mb-2 mt-16">
           Search Results
         </h1>

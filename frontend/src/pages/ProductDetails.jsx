@@ -10,9 +10,11 @@ import Breadcrumbs from "../components/Breadcrumbs";
 const ProductDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null); // Set initial state to null
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [cart, setCart] = useCart();
+  const [loading, setLoading] = useState(true); // Track loading state
+  const [imageLoading, setImageLoading] = useState(true); // Track image loading
 
   useEffect(() => {
     if (params?.slug) getProduct();
@@ -27,6 +29,8 @@ const ProductDetails = () => {
       getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Set loading to false once data is fetched
     }
   };
 
@@ -41,39 +45,65 @@ const ProductDetails = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    if (product) {
+      setCart([...cart, product]);
+      localStorage.setItem("cart", JSON.stringify([...cart, product]));
+      toast.success("Item Added to Cart");
+    } else {
+      toast.error("Failed to add item to cart. Please try again.");
+    }
+  };
+
+  const handleImageLoad = () => {
+    setImageLoading(false); // Image loaded successfully
+  };
+
+  const handleImageError = () => {
+    setImageLoading(false); // Image failed to load
+  };
+
+  if (loading) return <div>Loading...</div>; // Show loading state
+
   return (
-    <Layout title={`Product Details - ${product.name}`}>
+    <Layout title={`Product Details - ${product?.name || "Loading..."}`}>
       <div className="w-full p-4 bg-[#1A1A1A] text-white min-h-screen">
         <Breadcrumbs categoryName={product?.category?.name} />
         <div className="flex flex-col md:flex-row gap-8 mb-8">
           <div className="md:w-1/2 bg-[#222222] p-4 rounded-lg flex justify-center items-center">
+            {imageLoading && <div>Loading image...</div>}
             <img
-              src={`http://localhost:8080/api/v1/product/product-photo/${product._id}`}
+              src={`http://localhost:8080/api/v1/product/product-photo/${product?._id}`}
               className="w-3/4 h-auto object-cover rounded-lg"
-              alt={product.name}
+              alt={product?.name || "Product image"}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              style={{ display: imageLoading ? "none" : "block" }}
             />
           </div>
 
           <div className="md:w-1/2">
-            <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+            <h1 className="text-4xl font-bold mb-4">
+              {product?.name || "Loading..."}
+            </h1>
             <p className="text-3xl font-bold text-red-500 mb-4">
-              රු. {product?.price?.toLocaleString()}
+              {product?.price
+                ? `රු. ${product.price.toLocaleString()}`
+                : "Loading..."}
             </p>
             <div className="bg-[#222222] p-4 rounded-lg mb-4">
-              <p className="mb-2">{product.description}</p>
-              <p className="mb-2">Category: {product?.category?.name}</p>
+              <p className="mb-2">
+                {product?.description || "Loading description..."}
+              </p>
+              <p className="mb-2">
+                Category: {product?.category?.name || "Loading..."}
+              </p>
             </div>
             <Button
               type="primary"
               className="w-full bg-blue-600 hover:bg-blue-700 h-12 text-lg font-semibold"
-              onClick={() => {
-                setCart([...cart, product]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, product])
-                );
-                toast.success("Item Added to Cart");
-              }}
+              onClick={handleAddToCart}
+              disabled={!product} // Disable button if product is not loaded
             >
               ADD TO CART
             </Button>
