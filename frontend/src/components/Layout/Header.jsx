@@ -26,6 +26,15 @@ const Header = () => {
 
   const userMenu = (
     <Menu>
+      <Menu.Item key="profile">
+        <Link
+          to={`/dashboard/${
+            auth?.user?.role === 1 ? "user/profile" : "user/proifle"
+          }`}
+        >
+          Profile
+        </Link>
+      </Menu.Item>
       <Menu.Item key="dashboard">
         <Link
           to={`/dashboard/${
@@ -45,7 +54,7 @@ const Header = () => {
     <Menu>
       {categories?.map((c) => (
         <Menu.Item key={c._id}>
-          <Link to={`/store/category/${c.slug}`}>{c.name}</Link>
+          <Link to={`/category/${c.slug}`}>{c.name}</Link>
         </Menu.Item>
       ))}
     </Menu>
