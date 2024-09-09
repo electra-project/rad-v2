@@ -79,7 +79,9 @@ const Login = () => {
           </button>
         </div>
         <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-xl font-semibold md:text-2xl">Electra Technologies</p>
+          <p className="text-xl font-semibold md:text-2xl">
+            Electra Technologies
+          </p>
         </div>
       </div>
       <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center min-h-screen">
@@ -116,19 +118,19 @@ const Login = () => {
             <i className="fas fa-eye absolute right-3 top-3 text-gray-400"></i>
           </div>
           <div className="mb-6 flex flex-col sm:flex-row justify-between items-center">
-            <div className="flex items-center mb-4 sm:mb-0">
+            {/* <div className="flex items-center mb-4 sm:mb-0">
               <input className="mr-2" id="remember" type="checkbox" />
               <label className="text-gray-400" htmlFor="remember">
                 Remember me
               </label>
-            </div>
-            <button
+            </div> */}
+            {/* <button
               type="button"
               className="text-blue-400"
               onClick={() => navigate("/forgot-password")}
             >
               Forgot Password?
-            </button>
+            </button> */}
           </div>
           <button
             type="submit"

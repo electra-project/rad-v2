@@ -37,7 +37,7 @@ const Register = () => {
       <div className="md:w-1/2 relative overflow-hidden">
         <img
           alt="Background"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-left"
           src="https://www.aorus.com/event/event/q123-amd-gamebundle/assets/images/Feature2-bg.jpg"
         />
         <div className="absolute top-8 left-8 text-white">
@@ -53,7 +53,9 @@ const Register = () => {
           </button>
         </div>
         <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-lg md:text-xl font-semibold">Electra Technologies</p>
+          <p className="text-lg md:text-xl font-semibold">
+            Electra Technologies
+          </p>
         </div>
       </div>
       <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center min-h-screen">
