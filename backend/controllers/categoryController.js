@@ -1,7 +1,7 @@
 import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
 import fs from "fs";
-import formidable from "formidable"; // Assuming you're using formidable for form parsing
+import formidable from "formidable"; 
 
 export const createCategoryController = (req, res) => {
   const form = formidable({ multiples: true });

@@ -106,16 +106,18 @@ const CreateProduct = () => {
                   type="text"
                   value={name}
                   placeholder="Product Name"
-                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-black placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setName(e.target.value)}
+                  style={{ color: "black" }} // Ensures text color is black when typing
                 />
               </div>
               <div className="mb-4">
                 <textarea
                   value={description}
                   placeholder="Product Description"
-                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-black placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setDescription(e.target.value)}
+                  style={{ color: "black" }} // Ensures text color is black when typing
                 />
               </div>
               <div className="mb-4">
@@ -123,8 +125,9 @@ const CreateProduct = () => {
                   type="number"
                   value={price}
                   placeholder="Price"
-                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-black placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setPrice(e.target.value)}
+                  style={{ color: "black" }} // Ensures text color is black when typing
                 />
               </div>
               <div className="mb-4">
@@ -132,8 +135,9 @@ const CreateProduct = () => {
                   type="number"
                   value={quantity}
                   placeholder="Quantity"
-                  className="form-control w-full bg-[#333333] text-white placeholder-gray-400 border border-gray-700"
+                  className="form-control w-full bg-[#333333] text-black placeholder-gray-400 border border-gray-700"
                   onChange={(e) => setQuantity(e.target.value)}
+                  style={{ color: "black" }} // Ensures text color is black when typing
                 />
               </div>
               <div className="mb-4">

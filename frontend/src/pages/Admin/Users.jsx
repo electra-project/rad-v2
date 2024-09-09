@@ -26,11 +26,25 @@ const Users = () => {
     try {
       const { data } = await axios.delete(`http://localhost:8080/api/v1/auth/delete-user/${userId}`);
       toast.success(data.message);
-      // Refresh the list after deletion
       getAllUsers();
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong while deleting the user");
+    }
+  };
+
+  // Make user admin
+  const handleMakeAdmin = async (userId) => {
+    const confirmed = window.confirm("Are you sure you want to make this user an admin?");
+    if (!confirmed) return;
+
+    try {
+      const { data } = await axios.put(`http://localhost:8080/api/v1/auth/make-admin/${userId}`);
+      toast.success(data.message);
+      getAllUsers();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while making the user an admin");
     }
   };
 
@@ -55,14 +69,22 @@ const Users = () => {
                     <p className="text-gray-300">{user.email}</p>
                     <p className="text-gray-300">{user.phone}</p>
                     <p className="text-gray-300">{user.address}</p>
-                    {/* Conditionally show the delete button if the user is not an admin */}
+                    <p className="text-gray-300">Role: {user.role === 1 ? "Admin" : "User"}</p>
                     {user.role !== 1 && (
-                      <button
-                        onClick={() => handleDelete(user._id)}
-                        className="bg-red-600 text-white p-2 mt-4 rounded hover:bg-red-700"
-                      >
-                        Delete User
-                      </button>
+                      <div className="flex gap-2 mt-4">
+                        <button
+                          onClick={() => handleDelete(user._id)}
+                          className="bg-red-600 text-white p-2 rounded hover:bg-red-700"
+                        >
+                          Delete User
+                        </button>
+                        <button
+                          onClick={() => handleMakeAdmin(user._id)}
+                          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+                        >
+                          Make Admin
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>

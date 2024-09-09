@@ -1,6 +1,5 @@
 import express from "express";
-// import { body } from "express-validator";
-// import rateLimit from "express-rate-limit";
+
 
 import {
   registerController,
@@ -13,23 +12,13 @@ import {
   orderStatusController,
   getAllUsersController,
   deleteUserController,
-  deleteOwnAccountController
+  deleteOwnAccountController,
+  makeAdminController
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
-// ILL RE CHECK THIS LATER, THIS IS BRICKING IT @MURSHID
 
-// const validateRegistration = [
-//   body("email").isEmail().normalizeEmail(),
-//   body("password").isLength({ min: 6 }),
-//   body("name").notEmpty().trim(),
-//   // ... other validations
-// ];
 
-// const loginLimiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 5,
-// });
 
 //router object
 const router = express.Router();
@@ -73,6 +62,9 @@ router.get("/get-users", requireSignIn, isAdmin, getAllUsersController);
 router.delete("/delete-user/:userId", requireSignIn, isAdmin, deleteUserController);
 
 router.delete("/delete-own-account", requireSignIn, deleteOwnAccountController);
+
+router.put("/make-admin/:userId", requireSignIn, isAdmin, makeAdminController);
+
 
 
 

@@ -383,3 +383,30 @@ export const deleteOwnAccountController = async (req, res) => {
       .json({ error: "An error occurred while deleting your account" });
   }
 };
+
+// Make user admin
+export const makeAdminController = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Check if the user exists
+    const userToPromote = await userModel.findById(userId);
+    if (!userToPromote) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if the user is already an admin
+    if (userToPromote.role === 1) {
+      return res.status(400).json({ error: "User is already an admin" });
+    }
+
+    // Promote the user to admin
+    userToPromote.role = 1;
+    await userToPromote.save();
+
+    res.status(200).json({ message: "User has been promoted to admin successfully" });
+  } catch (error) {
+    console.error("Error making user admin:", error);
+    res.status(500).json({ error: "An error occurred while promoting the user to admin" });
+  }
+};
